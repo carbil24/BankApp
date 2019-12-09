@@ -34,43 +34,56 @@ namespace Test3
             mainWindow = _mainWindow;
         }
 
+        /*
+         * Compares the information against the database and loads its properties into the Main Window.
+         * Objective: to login to the Bank App.
+         */
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             Regex numberPattern = new Regex(@"^\d+$");
 
             if (string.IsNullOrEmpty(txtId.Text) || string.IsNullOrEmpty(txtPassword.Password))
             {
-                MessageBox.Show("ID and password fields cannot be empty");
+                MessageBox.Show("ID and password fields cannot be empty", "Empty fields", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else if (!(numberPattern.IsMatch(txtId.Text)))
             {
-                MessageBox.Show("ID can only be a number");
+                MessageBox.Show("ID can only be a number", "Wrong input", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                User currentUser = repo.LoginUser(int.Parse(txtId.Text.ToString()), txtPassword.Password);
-
-                if (currentUser != null)
+                try
                 {
-                    if (!currentUser.Name.Equals("admin"))
+                    // Calls the method to login user in the ViewModel class and assigns it to a variable.
+                    User currentUser = repo.LoginUser(int.Parse(txtId.Text.ToString()), txtPassword.Password);
+
+                    if (currentUser != null)
                     {
-                        MessageBox.Show("Welcome " + currentUser.Name.ToString() + "!");
-                        mainWindow.LoadUserInfo(currentUser);
-                        mainWindow.LoadControls();
-                        this.Close();
+                        if (!currentUser.Name.Equals("admin"))
+                        {
+                            MessageBox.Show("Welcome " + currentUser.Name.ToString() + "!", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
+                            // Calls the public method in MainWindow class to load the user information.
+                            mainWindow.LoadUserInfo(currentUser);
+                            // Calls the public method in MainWindow class to enable the controls.
+                            mainWindow.LoadControls();
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Welcome " + currentUser.Name.ToString() + "!", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
+                            AdminPanel adminWindow = new AdminPanel();
+                            this.Close();
+                            adminWindow.ShowDialog();
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Welcome " + currentUser.Name.ToString() + "!");
-                        AdminPanel adminWindow = new AdminPanel();
-                        this.Close();
-                        adminWindow.ShowDialog();
-
+                        MessageBox.Show("Invalid ID/Password", "User not found", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Invalid ID/Password");
+                    MessageBox.Show(ex.Message);
                 }
             }
         }

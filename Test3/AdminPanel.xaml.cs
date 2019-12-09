@@ -28,16 +28,28 @@ namespace Test3
             this.SizeToContent = SizeToContent.Width;
             this.SizeToContent = SizeToContent.Height;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            //Update the grid
             dgUsers.ItemsSource = repo.GetAllUsersData();
         }
 
+        /* Button to call the AddUser window. */
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddUserAccount addUserWindow = new AddUserAccount();
-            addUserWindow.ShowDialog();
-            dgUsers.ItemsSource = repo.GetAllUsersData();
+            try
+            {
+                AddUserAccount addUserWindow = new AddUserAccount();
+                addUserWindow.ShowDialog();
+                //Update the grid
+                dgUsers.ItemsSource = repo.GetAllUsersData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
+        /* Button to call the UpdateUser window. */
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (dgUsers.SelectedItem != null)
@@ -47,6 +59,7 @@ namespace Test3
                     User current = dgUsers.SelectedItem as User;
                     UpdateUserAccount updateUserWindow = new UpdateUserAccount(current);
                     updateUserWindow.ShowDialog();
+                    //Update the grid
                     dgUsers.ItemsSource = repo.GetAllUsersData();
                 }
                 catch (Exception ex)
@@ -56,10 +69,11 @@ namespace Test3
             }
             else
             {
-                MessageBox.Show("Please select an user first");
+                MessageBox.Show("Please select an user first", "User not selected", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        /* Button to delete a record from the database */
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (dgUsers.SelectedItem != null)
@@ -70,7 +84,9 @@ namespace Test3
                 {
                     try
                     {
+                        // Calls the method to delete record in the ViewModel class.
                         repo.DeleteUserRecord((dgUsers.SelectedItem as User).ID);
+                        // Update the grid
                         dgUsers.ItemsSource = repo.GetAllUsersData();
                     }
                     catch (Exception ex)
@@ -81,7 +97,7 @@ namespace Test3
             }             
             else
             {
-                MessageBox.Show("Please select an user first");
+                MessageBox.Show("Please select an user first", "User not selected", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

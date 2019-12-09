@@ -35,13 +35,16 @@ namespace Test3
             ResetControls();
         }
 
+        /*
+        * Button used to deposit an amount to the account, updates the record in the database and append a line to the log file.
+        */
         private void btnDeposit_Click(object sender, RoutedEventArgs e)
         {
             Regex numberPattern = new Regex(@"^\d+([.]\d+)?$");
 
             if (string.IsNullOrEmpty(txtAmount.Text) || (!(numberPattern.IsMatch(txtAmount.Text))))
             {
-                MessageBox.Show("Amount can only be a number");
+                MessageBox.Show("Amount can only be a number", "Wrong input", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -58,19 +61,22 @@ namespace Test3
             }
         }
 
+        /*
+        * Button used to withdraw an amount from the account, updates the record in the database and append a line to the log file.
+        */
         private void btnWithdraw_Click(object sender, RoutedEventArgs e)
         {
             Regex numberPattern = new Regex(@"^\d+([.]\d+)?$");        
 
             if (string.IsNullOrEmpty(txtAmount.Text) || (!numberPattern.IsMatch(txtAmount.Text)))
             {
-                MessageBox.Show("Amount can only be a number");
+                MessageBox.Show("Amount can only be a number", "Wrong input", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
                 if (double.Parse(txtAmount.Text) > UserInfo.UserAccount.Balance)
                 {
-                    MessageBox.Show("You cannot withdraw more than $" + UserInfo.UserAccount.Balance);
+                    MessageBox.Show("You cannot withdraw more than $" + UserInfo.UserAccount.Balance, "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
                 else
                 {
@@ -88,17 +94,27 @@ namespace Test3
             }
         }
 
+        /*
+        * Button used to login to the bank app.
+        */
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow(this);
             loginWindow.ShowDialog();
         }
 
+        /*
+        * Button used to logout from the bank app.
+        */
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             ResetControls();
         }
 
+        /*
+        * Gets the information of the trasaction.
+        * Objective: to add a new line in the log file with the information of the transaction.
+        */
         private void AddTransactionToFile(DateTime timeStamp, int accountNumber, char typeOfTransaction, double oldBalance, double newBalance)
         {
             try
@@ -120,16 +136,23 @@ namespace Test3
             }
         }
 
-        # region Helper Methods
+        #region Helper Methods
+
+        /* Helper method to avoid duplicate code in Deposit and Withdraw */
         private void AfterTransaction()
         {
-            MessageBox.Show("Transaction successful");
+            MessageBox.Show("Transaction successful", "Attention", MessageBoxButton.OK, MessageBoxImage.Information);
+            //Update balance in the account of the specific user.
             repo.UpdateBalance(UserInfo);
             txtBalance.Text = UserInfo.UserAccount.Balance.ToString("c");
             txtAmount.Clear();
             txtAmount.Focus();
         }
 
+        /*
+         * Gets the user entered in the Login Window from the database and loads its properties into the Main Window.
+         * Objective: to make transactions to the specific account.
+         */
         public void LoadUserInfo(User currentUser)
         {
             txtbName.Text = currentUser.Name;
@@ -138,6 +161,7 @@ namespace Test3
             UserInfo = currentUser;
         }
 
+        /* Helper method to reset the controls in the form */
         private void ResetControls()
         {
             txtbID.Text = "";
@@ -152,6 +176,7 @@ namespace Test3
             btnLogout.Visibility = Visibility.Hidden;
         }
 
+        /* Helper method to enable the controls in the form */
         public void LoadControls()
         {
             txtAmount.IsEnabled = true;

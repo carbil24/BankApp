@@ -34,22 +34,34 @@ namespace Test3
             txtNewName.Focus();
         }
 
+        /* Reads the values from the form and updates the records in the database. */
         private void btnUpdateUser_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtNewName.Text) || string.IsNullOrEmpty(txtNewPassword.Password))
             {
-                MessageBox.Show("New name and new password fields cannot be empty");
+                MessageBox.Show("New name and new password fields cannot be empty", "Empty fields", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                UserInfo.Name = txtNewName.Text;
-                UserInfo.Password = txtNewPassword.Password;
-                repo.UpdateUser(UserInfo);
-                this.Close();
+                try
+                {
+                    UserInfo.Name = txtNewName.Text;
+                    UserInfo.Password = txtNewPassword.Password;
+                    // Calls the method to update record in the ViewModel class.
+                    repo.UpdateUser(UserInfo);
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
         #region Helper Methods
+        /*
+         * Gets the selected contact and loads its properties into the form.
+         */
         private void LoadUserInfo()
         {
             txtbId.Text = UserInfo.ID.ToString();

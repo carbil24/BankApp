@@ -31,11 +31,14 @@ namespace Test3
             txtName.Focus();
         }
 
+        /*
+         * Button used to add a new record to the database
+         */
         private void btnAddUser_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtName.Text) || string.IsNullOrEmpty(txtPassword.Password))
             {
-                MessageBox.Show("Name and password fields cannot be empty");
+                MessageBox.Show("Name and password fields cannot be empty", "Empty fields", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -48,7 +51,7 @@ namespace Test3
                         Balance = 0
                     }
                 };
-
+                // Calls the method to add a new record in the ViewModel class.
                 repo.AddNewUser(user);
                 this.Close();
             }
