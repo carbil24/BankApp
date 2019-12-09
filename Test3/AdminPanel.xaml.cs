@@ -62,19 +62,26 @@ namespace Test3
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (dgUsers.SelectedItem != null && MessageBox.Show("Are you sure you want to delete?\n" +
+            if (dgUsers.SelectedItem != null)
+            {
+                if (MessageBox.Show("Are you sure you want to delete?\n" +
                  "This will delete the account record as well", "Confirm Delete",
                  MessageBoxButton.YesNo, MessageBoxImage.Stop) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        repo.DeleteUserRecord((dgUsers.SelectedItem as User).ID);
+                        dgUsers.ItemsSource = repo.GetAllUsersData();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }             
+            else
             {
-                try
-                {
-                    repo.DeleteUserRecord((dgUsers.SelectedItem as User).ID);
-                    dgUsers.ItemsSource = repo.GetAllUsersData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                MessageBox.Show("Please select an user first");
             }
         }
     }
