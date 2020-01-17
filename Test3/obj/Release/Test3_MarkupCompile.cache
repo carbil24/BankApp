@@ -4,11 +4,11 @@
 winexe
 C#
 .cs
-C:\Users\ipd\Source\BankApp\Test3\obj\Debug\
+C:\Users\ipd\Source\BankApp\Test3\obj\Release\
 Test3
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\ipd\Source\BankApp\Test3\App.xaml
 51477227961
 
@@ -16,5 +16,5 @@ C:\Users\ipd\Source\BankApp\Test3\App.xaml
 16-360475454
 AddUserAccount.xaml;AdminPanel.xaml;LoginWindow.xaml;MainWindow.xaml;UpdateUserAccount.xaml;
 
-False
+True
 

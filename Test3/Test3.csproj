@@ -69,6 +69,14 @@
     <Compile Include="Migrations\201912070704469_InitialMigration.designer.cs">
       <DependentUpon>201912070704469_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912092040462_DeleteStringLengthInPassword.cs" />
+    <Compile Include="Migrations\201912092040462_DeleteStringLengthInPassword.designer.cs">
+      <DependentUpon>201912092040462_DeleteStringLengthInPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912092043194_AddStringLengthInPassword.cs" />
+    <Compile Include="Migrations\201912092043194_AddStringLengthInPassword.designer.cs">
+      <DependentUpon>201912092043194_AddStringLengthInPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="AdminPanel.xaml.cs">
@@ -131,6 +139,12 @@
     </Compile>
     <EmbeddedResource Include="Migrations\201912070704469_InitialMigration.resx">
       <DependentUpon>201912070704469_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912092040462_DeleteStringLengthInPassword.resx">
+      <DependentUpon>201912092040462_DeleteStringLengthInPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912092043194_AddStringLengthInPassword.resx">
+      <DependentUpon>201912092043194_AddStringLengthInPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
